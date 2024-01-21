@@ -221,7 +221,9 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
 - In this repo you can find an ArgoCD Application that will deploy this demo in to your cluster.
   - For it to work you will need:
         - Running K8S Cluster.
+
         - ArgoCD Running and Configured.
+
         - Tekton Pipelines Running and Configured.
 
   - Please Fork, dont clone, this repo and edit the argoCD Application with your Git Repo URL, the file located in:
