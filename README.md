@@ -131,7 +131,6 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
 
 
 
-
     ```YAML
     apiVersion: tekton.dev/v1
     kind: Pipeline
