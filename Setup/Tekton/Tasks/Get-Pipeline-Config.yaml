@@ -12,8 +12,10 @@ spec:
       description: To build the main Conatainer (True Or False)
     - name: build-tests
       description: To build the Tests Conatainer (True Or False)
-
-
+    - name: gitops-url
+      description: The Full GitOps Repository Url
+    - name: gitops-applicationpath
+      description: The Full GitOps Repository Url
   steps:
     - name: get-pipeline-config
       image: 'quay.io/thason/pipeline-tools:latest'
