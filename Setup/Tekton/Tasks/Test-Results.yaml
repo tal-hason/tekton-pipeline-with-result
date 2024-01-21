@@ -28,7 +28,7 @@ spec:
       args:
         - '-c'
         - >
-          set -ex
+          set -x
 
           echo "The Project Name from the Config: $(params.project-name)"
 
