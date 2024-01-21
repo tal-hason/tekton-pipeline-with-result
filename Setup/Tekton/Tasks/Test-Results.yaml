@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: get-pipeline-config
+  name: print-pipeline-config
 spec:
   params:
     - name: project-name
