@@ -30,24 +30,17 @@ spec:
         - >
           set -ex
 
-          echo "The Project Name from the Config: "
-          echo $(params.project-name)
+          echo "The Project Name from the Config: $(params.project-name)"
 
-          echo "The Project type from the Config: "
-          echo $(params.project-type)
+          echo "The Project type from the Config: $(params.project-type)"
+          
+          echo "Parameter for Build main Repo image: $(params.build-main)"
 
-          echo "Parameter for Build main Repo image: "
-          echo $(params.build-main)
+          echo "Parameter for Build tests Repo image: $(params.build-tests)"
 
-          echo "Parameter for Build tests Repo image: "
-          echo $(params.build-tests)
+          echo "the GitOps repo Full URL: $(params.gitops-url)"
 
-          echo "the GitOps repo Full URL: "
-          echo $(params.gitops-url)
-
-          echo "the GitOps repo application Path: "
-          echo $(params.gitops-applicationpath)
-
+          echo "the GitOps repo application Path: $(params.gitops-applicationpath)"
 
       command:
         - /bin/bash
