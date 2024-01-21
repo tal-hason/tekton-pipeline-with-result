@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: update-chart
+  name: get-pipeline-config
 spec:
   results:
     - name: project-name
