@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: update-chart
+spec:
+  results:
+    - name: project-name
+      description: the project name from the config file.
+
+
+  steps:
+    - name: get-pipeline-config
+      image: 'quay.io/thason/pipeline-tools:latest'
+      args:
+        - '-c'
+        - >
+          set -ex
+
+          yq eval '.pipelineConfig.Project.Name' $(workspaces.input.path)/.Pipeline/Properties.yaml | tee $(results.project-name.path)
+
+      command:
+        - /bin/bash
+      resources: {}
+  workspaces:
+    - description: The git repo will be read from this workspace
+      name: input
