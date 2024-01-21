@@ -133,6 +133,9 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
     |--------------------|------------------|--------------------|-------------------------------------------|
     |tasks|get-pipeline-config|results|gitops-applicationpath|
 
+    the full param should look like this:
+    > $(tasks.get-pipeline-config.results.gitops-applicationpath)
+
     ```YAML
     apiVersion: tekton.dev/v1
     kind: Pipeline
