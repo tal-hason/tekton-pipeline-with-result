@@ -6,6 +6,12 @@ spec:
   results:
     - name: project-name
       description: the project name from the config file.
+    - name: type
+      description: The Type of the Repo (i.e Polyrepo or Monorepo)
+    - name: build-main
+      description: To build the main Conatainer (True Or False)
+    - name: build-tests
+      description: To build the Tests Conatainer (True Or False)
 
 
   steps:
@@ -17,6 +23,16 @@ spec:
           set -ex
 
           yq eval '.pipelineConfig.Project.Name' $(workspaces.input.path)/.Pipeline/Properties.yaml | tee $(results.project-name.path)
+
+          yq eval '.pipelineConfig.Type' $(workspaces.input.path)/.Pipeline/Properties.yaml | tee $(results.type.path)
+
+          yq eval '.pipelineConfig.Build.Main' $(workspaces.input.path)/.Pipeline/Properties.yaml | tee $(results.build-main.path)
+
+          yq eval '.pipelineConfig.Build.Tests' $(workspaces.input.path)/.Pipeline/Properties.yaml | tee $(results.build-tests.path)
+
+          yq eval '.pipelineConfig.GitOps.RepoURL' $(workspaces.input.path)/.Pipeline/Properties.yaml | tee $(results.gitops-url.path)
+
+          yq eval '.pipelineConfig.GitOps.ApplicationPath' $(workspaces.input.path)/.Pipeline/Properties.yaml | tee $(results.gitops-applicationpath.path)
 
       command:
         - /bin/bash
