@@ -1,0 +1,77 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: get-results
+spec:
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: 'https://github.com/tal-hason/tekton-pipeline-with-result.git'
+        - name: revision
+          value: main
+        - name: refspec
+          value: ''
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: crtFileName
+          value: ca-bundle.crt
+        - name: subdirectory
+          value: ''
+        - name: sparseCheckoutDirectories
+          value: ''
+        - name: deleteExisting
+          value: 'true'
+        - name: httpProxy
+          value: ''
+        - name: httpsProxy
+          value: ''
+        - name: noProxy
+          value: ''
+        - name: verbose
+          value: 'true'
+        - name: gitInitImage
+          value: >-
+            gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.40.2
+        - name: userHome
+          value: /home/git
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: repository
+    - name: get-pipeline-config
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: Task
+        name: get-pipeline-config
+      workspaces:
+        - name: input
+          workspace: repository
+    - name: print-pipeline-config
+      params:
+        - name: project-name
+          value: $(tasks.get-pipeline-config.results.project-name)
+        - name: project-type
+          value: $(tasks.get-pipeline-config.results.type)
+        - name: build-main
+          value: $(tasks.get-pipeline-config.results.build-main)
+        - name: build-tests
+          value: $(tasks.get-pipeline-config.results.build-tests)
+        - name: gitops-url
+          value: $(tasks.get-pipeline-config.results.gitops-url)
+        - name: gitops-applicationpath
+          value: $(tasks.get-pipeline-config.results.gitops-applicationpath)
+      runAfter:
+        - get-pipeline-config
+      taskRef:
+        kind: Task
+        name: print-pipeline-config
+  workspaces:
+    - name: repository

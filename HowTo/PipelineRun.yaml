@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: get-results-
+  labels:
+    tekton.dev/pipeline: get-results
+spec:
+  pipelineRef:
+    name: get-results
+  timeouts:
+    pipeline: 1h0m0s
+  workspaces:
+    - name: repository
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 50Mi
+          volumeMode: Filesystem
