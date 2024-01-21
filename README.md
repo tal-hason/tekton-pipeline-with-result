@@ -215,3 +215,87 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
     workspaces:
         - name: repository
     ```
+
+### In the Name Of the GitOps spirit
+
+- In this repo you can find an ArgoCD Application that will deploy this demo in to your cluster.
+  - For it to work you will need:
+        1. Running K8S Cluster.
+        2. ArgoCD Running and Configured.
+        3. Tekton Pipelines Running and Configured.
+
+  - Please Fork, dont clone, this repo and edit the argoCD Application with your Git Repo URL, the file located in:
+
+    > HowTo/ArgoCD-Application.yaml
+
+    ```YAML
+    apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+    name: tekton-with-results
+    spec:
+    destination:
+        namespace: tekton-with-results
+        server: 'https://kubernetes.default.svc'
+    project: default
+    source:
+        directory:
+        jsonnet: {}
+        recurse: true
+        path: Setup
+        repoURL: 'https://{{Your Git Repo URL}}.git'
+        targetRevision: main
+    syncPolicy:
+        automated:
+        prune: true
+        selfHeal: true
+        syncOptions:
+        - CreateNamespace=true    
+    ```
+  
+  - The ArgoCD application will create everything needed:
+    - namespace
+    - tekton Tasks
+    - tekton Pipeline
+
+  - Under HowTo folder there is a Sample ready to be triggered of a PipelineRun file:
+
+    > HowTo/PipelineRun.yaml
+
+    ```YAML
+    apiVersion: tekton.dev/v1
+    kind: PipelineRun
+    metadata:
+    generateName: get-results-
+    labels:
+        tekton.dev/pipeline: get-results
+    spec:
+    pipelineRef:
+        name: get-results
+    timeouts:
+        pipeline: 1h0m0s
+    workspaces:
+        - name: repository
+        volumeClaimTemplate:
+            spec:
+            accessModes:
+                - ReadWriteOnce
+            resources:
+                requests:
+                storage: 50Mi
+            volumeMode: Filesystem
+    ```
+
+    Before applying it remmeber to update in the pipeline your Git RepoURL:
+
+    ```YAML
+    tasks:
+        - name: git-clone
+        params:
+            - name: url
+            value: 'https://{{Your Git Repo URL}}.git'
+            - name: revision
+            value: main    
+    ```
+
+### Enjoy
