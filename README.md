@@ -130,11 +130,9 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
 5. In our Pipeline we will map to each Parameter object in the task the tasts results, as follows:
 
     ---------------------------------------------------------------------------------------------------------
-
     | indicats the tasks | Name of the Task | result of the task | the name of the result as set in the Task |
-    ----------------------------------------------------------
-
-    |tasks|get-pipeline-config|results|gitops-applicationpath|
+    ------------------------------------------------------------------
+    | tasks | get-pipeline-config | results | gitops-applicationpath |
 
     ```YAML
     apiVersion: tekton.dev/v1
