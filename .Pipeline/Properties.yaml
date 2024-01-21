@@ -1,0 +1,10 @@
+pipelineConfig:
+  Project:
+    Name: Test-project
+  Type: Polyrepo
+  Build:
+    Main: true
+    Tests: true
+  GitOps:
+    RepoURL: "https://github.com/tal-hason/cd-repo-demo.git"
+    ApplicationPath: Application/
