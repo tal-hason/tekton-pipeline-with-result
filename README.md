@@ -11,13 +11,13 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
 
     ```YAML
     pipelineConfig:
-    Project:
+      Project:
         Name: Test-project
-    Type: Polyrepo
-    Build:
+      Type: Polyrepo
+      Build:
         Main: true
         Tests: true
-    GitOps:
+      GitOps:
         RepoURL: "https://github.com/tal-hason/cd-repo-demo.git"
         ApplicationPath: Application/
     ```
@@ -28,9 +28,9 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
     apiVersion: tekton.dev/v1beta1
     kind: Task
     metadata:
-    name: get-pipeline-config
+      name: get-pipeline-config
     spec:
-    results:
+      results:
         - name: project-name
         description: the project name from the config file.
         - name: type
@@ -43,7 +43,7 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
         description: The Full GitOps Repository Url
         - name: gitops-applicationpath
         description: The Full GitOps Repository Url
-    steps:
+      steps:
         - name: get-pipeline-config
         image: 'quay.io/thason/pipeline-tools:latest'
         args:
@@ -66,7 +66,7 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
         command:
             - /bin/bash
         resources: {}
-    workspaces:
+      workspaces:
         - description: The git repo will be read from this workspace
         name: input        
     ```
@@ -79,9 +79,9 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
     apiVersion: tekton.dev/v1beta1
     kind: Task
     metadata:
-    name: print-pipeline-config
+      name: print-pipeline-config
     spec:
-    params:
+      params:
         - name: project-name
         description: The Project Name from the Config
         type: string
@@ -100,10 +100,10 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
         - name: gitops-applicationpath
         description: the GitOps repo application Path
         type: string
-    steps:
+      steps:
         - name: get-results-from-pipeline
-        image: 'quay.io/thason/pipeline-tools:latest'
-        args:
+          image: 'quay.io/thason/pipeline-tools:latest'
+          args:
             - '-c'
             - >
             set -x
@@ -120,9 +120,9 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
 
             echo "the GitOps repo application Path: $(params.gitops-applicationpath)"
 
-        command:
+          command:
             - /bin/bash
-        resources: {}
+          resources: {}
     ```
 
     This simple task just prints the Params values of the task.
@@ -140,11 +140,11 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
     apiVersion: tekton.dev/v1
     kind: Pipeline
     metadata:
-    name: get-results
+      name: get-results
     spec:
-    tasks:
+      tasks:
         - name: git-clone
-        params:
+          params:
             - name: url
             value: 'https://github.com/tal-hason/tekton-pipeline-with-result.git'
             - name: revision
@@ -178,23 +178,23 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
                 gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.40.2
             - name: userHome
             value: /home/git
-        taskRef:
+          taskRef:
             kind: Task
             name: git-clone
-        workspaces:
+          workspaces:
             - name: output
             workspace: repository
         - name: get-pipeline-config
-        runAfter:
+          runAfter:
             - git-clone
-        taskRef:
+          taskRef:
             kind: Task
             name: get-pipeline-config
-        workspaces:
+          workspaces:
             - name: input
             workspace: repository
         - name: print-pipeline-config
-        params:
+          params:
             - name: project-name
             value: $(tasks.get-pipeline-config.results.project-name)
             - name: project-type
@@ -207,12 +207,12 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
             value: $(tasks.get-pipeline-config.results.gitops-url)
             - name: gitops-applicationpath
             value: $(tasks.get-pipeline-config.results.gitops-applicationpath)
-        runAfter:
+          runAfter:
             - get-pipeline-config
-        taskRef:
+          taskRef:
             kind: Task
             name: print-pipeline-config
-    workspaces:
+      workspaces:
         - name: repository
     ```
 
@@ -235,13 +235,13 @@ a Sample Tekton Pipeline, to create a Pipeline Configuration in the Git and allo
     apiVersion: argoproj.io/v1alpha1
     kind: Application
     metadata:
-    name: tekton-with-results
+      name: tekton-with-results
     spec:
-    destination:
+      destination:
         namespace: tekton-with-results
         server: 'https://kubernetes.default.svc'
-    project: default
-    source:
+      project: default
+      source:
         directory:
         jsonnet: {}
         recurse: true
