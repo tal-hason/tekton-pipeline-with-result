@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: print-pipeline-config-envs
+spec:
+  steps:
+    - name: get-results-from-pipeline
+      image: 'quay.io/thason/pipeline-tools:latest'
+      args:
+        - '-c'
+        - >
+          set -x
+
+          echo "The Project Name from the Config: ${PROJECT_NAME}"
+
+          echo "The Project type from the Config: ${PROJECT_TYPE}"
+          
+          echo "Parameter for Build main Repo image: ${BUILD_MAIN}"
+
+          echo "Parameter for Build tests Repo image: ${BUILD_TESTS}"
+
+          echo "the GitOps repo Full URL: ${GITOPS_REPO}"
+
+          echo "the GitOps repo application Path: ${GITOPS_APP_PATH}"
+
+      command:
+        - /bin/bash
+      resources: {}

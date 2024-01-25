@@ -73,5 +73,24 @@ spec:
       taskRef:
         kind: Task
         name: print-pipeline-config
+    - name: print-pipeline-config-envs
+      envs:
+        - name: PROJECT_NAME
+          value: $(tasks.get-pipeline-config.results.project-name)
+        - name: PROJECT_TYPE
+          value: $(tasks.get-pipeline-config.results.type)
+        - name: BUILD_MAIN
+          value: $(tasks.get-pipeline-config.results.build-main)
+        - name: BUILD_TESTS
+          value: $(tasks.get-pipeline-config.results.build-tests)
+        - name: GITOPS_REPO
+          value: $(tasks.get-pipeline-config.results.gitops-url)
+        - name: GITOPS_APP_PATH
+          value: $(tasks.get-pipeline-config.results.gitops-applicationpath)
+      runAfter:
+        - get-pipeline-config
+      taskRef:
+        kind: Task
+        name: print-pipeline-config
   workspaces:
     - name: repository
